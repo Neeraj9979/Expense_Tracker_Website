@@ -4,68 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Expense Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Personal Expense Tracker</h1>
+    <div class="app-container">
+        <header class="navbar">
+            <div class="brand">
+                <div class="brand-icon">₹</div>
+                <h1>ExpenseTracker</h1>
+            </div>
+            <p class="subtitle">Smart Personal Finance Dashboard</p>
         </header>
 
-        <section class="dashboard">
-            <div class="card">
-                <h3>Total Spending</h3>
-                <p id="total-spending">$0.00</p>
+        <!-- Top Metrics Cards -->
+        <section class="dashboard-grid">
+            <div class="metric-card primary">
+                <div class="card-icon">💳</div>
+                <div class="card-info">
+                    <span class="card-label">Total Spending</span>
+                    <h2 id="total-spending">₹0.00</h2>
+                </div>
             </div>
-            <div class="card">
-                <h3>Total Entries</h3>
-                <p id="total-entries">0</p>
+            <div class="metric-card accent">
+                <div class="card-icon">📊</div>
+                <div class="card-info">
+                    <span class="card-label">Total Transactions</span>
+                    <h2 id="total-entries">0</h2>
+                </div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="card-icon">🏷️</div>
+                <div class="card-info">
+                    <span class="card-label">Active Categories</span>
+                    <h2 id="active-categories">0</h2>
+                </div>
             </div>
         </section>
 
-        <div class="main-content">
-            <section class="form-section">
-                <h2>Add Expense</h2>
+        <!-- Main Workspace (Form + Analytics) -->
+        <div class="content-split">
+            <!-- Add Expense Section -->
+            <section class="glass-panel form-panel">
+                <div class="panel-header">
+                    <h3>Add New Transaction</h3>
+                </div>
                 <form id="expense-form">
-                    <input type="text" id="title" placeholder="Title (e.g. Grocery)" required>
-                    <input type="number" id="amount" step="0.01" placeholder="Amount ($)" required>
-                    <select id="category" required>
-                        <option value="" disabled selected>Select Category</option>
-                        <option value="Food">Food</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Bills">Bills</option>
-                        <option value="Shopping">Shopping</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <input type="date" id="date" required>
-                    <button type="submit">Add Expense</button>
+                    <div class="input-group">
+                        <label for="title">Transaction Name</label>
+                        <input type="text" id="title" placeholder="e.g. Swiggy, Fuel, Rent" required autocomplete="off">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="amount">Amount (₹)</label>
+                            <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Food & Dining">Food & Dining</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Bills & Utilities">Bills & Utilities</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Health">Health</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="date">Transaction Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <span>Add Expense</span>
+                    </button>
                 </form>
             </section>
 
-            <section class="chart-section">
-                <h2>Spending Breakdown</h2>
-                <canvas id="category-chart"></canvas>
+            <!-- Chart Section -->
+            <section class="glass-panel chart-panel">
+                <div class="panel-header">
+                    <h3>Spending Breakdown</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="category-chart"></canvas>
+                </div>
             </section>
         </div>
 
-        <section class="table-section">
-            <h2>Expense History</h2>
-            <table id="expenses-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="expenses-tbody">
-                    <!-- Dynamic Rows -->
-                </tbody>
-            </table>
+        <!-- History Table -->
+        <section class="glass-panel table-panel">
+            <div class="panel-header table-header">
+                <h3>Recent Expenses</h3>
+                <span class="badge" id="table-count">0 items</span>
+            </div>
+            <div class="table-responsive">
+                <table id="expenses-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenses-tbody">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 
