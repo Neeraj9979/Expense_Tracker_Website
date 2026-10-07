@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Personal Expense Tracker</h1>
+        </header>
+
+        <section class="dashboard">
+            <div class="card">
+                <h3>Total Spending</h3>
+                <p id="total-spending">$0.00</p>
+            </div>
+            <div class="card">
+                <h3>Total Entries</h3>
+                <p id="total-entries">0</p>
+            </div>
+        </section>
+
+        <div class="main-content">
+            <section class="form-section">
+                <h2>Add Expense</h2>
+                <form id="expense-form">
+                    <input type="text" id="title" placeholder="Title (e.g. Grocery)" required>
+                    <input type="number" id="amount" step="0.01" placeholder="Amount ($)" required>
+                    <select id="category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input type="date" id="date" required>
+                    <button type="submit">Add Expense</button>
+                </form>
+            </section>
+
+            <section class="chart-section">
+                <h2>Spending Breakdown</h2>
+                <canvas id="category-chart"></canvas>
+            </section>
+        </div>
+
+        <section class="table-section">
+            <h2>Expense History</h2>
+            <table id="expenses-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expenses-tbody">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
