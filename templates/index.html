@@ -6,38 +6,49 @@
     <title>Personal Expense Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- Background Animated Gradient Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
     <div class="app-container">
-        <header class="navbar">
+        <!-- Header -->
+        <header class="glass-header">
             <div class="brand">
                 <div class="brand-icon">₹</div>
-                <h1>ExpenseTracker</h1>
+                <div>
+                    <h1>ExpenseTracker <span class="badge-pro">PRO</span></h1>
+                    <p class="subtitle">Smart Glassmorphism Finance Dashboard</p>
+                </div>
             </div>
-            <p class="subtitle">Smart Personal Finance Dashboard</p>
+            <div class="header-right">
+                <span class="live-status"><span class="status-dot"></span> Live Sync</span>
+            </div>
         </header>
 
-        <!-- Top Metrics Cards -->
-        <section class="dashboard-grid">
-            <div class="metric-card primary">
-                <div class="card-icon">💳</div>
+        <!-- Metrics Cards Grid -->
+        <section class="metrics-grid">
+            <div class="glass-card metric-card">
+                <div class="card-icon glow-purple">💳</div>
                 <div class="card-info">
                     <span class="card-label">Total Spending</span>
                     <h2 id="total-spending">₹0.00</h2>
                 </div>
             </div>
-            <div class="metric-card accent">
-                <div class="card-icon">📊</div>
+            <div class="glass-card metric-card">
+                <div class="card-icon glow-cyan">⚡</div>
                 <div class="card-info">
                     <span class="card-label">Total Transactions</span>
                     <h2 id="total-entries">0</h2>
                 </div>
             </div>
-            <div class="metric-card highlight">
-                <div class="card-icon">🏷️</div>
+            <div class="glass-card metric-card">
+                <div class="card-icon glow-pink">🏷️</div>
                 <div class="card-info">
                     <span class="card-label">Active Categories</span>
                     <h2 id="active-categories">0</h2>
@@ -48,14 +59,14 @@
         <!-- Main Workspace (Form + Analytics) -->
         <div class="content-split">
             <!-- Add Expense Section -->
-            <section class="glass-panel form-panel">
+            <section class="glass-card form-panel">
                 <div class="panel-header">
-                    <h3>Add New Transaction</h3>
+                    <h3><span class="header-icon">✨</span> Add New Expense</h3>
                 </div>
                 <form id="expense-form">
                     <div class="input-group">
-                        <label for="title">Transaction Name</label>
-                        <input type="text" id="title" placeholder="e.g. Swiggy, Fuel, Rent" required autocomplete="off">
+                        <label for="title">Transaction Title</label>
+                        <input type="text" id="title" placeholder="e.g. Swiggy, Gym, Amazon" required autocomplete="off">
                     </div>
 
                     <div class="input-row">
@@ -83,28 +94,28 @@
                         <input type="date" id="date" required>
                     </div>
 
-                    <button type="submit" class="btn-submit">
-                        <span>Add Expense</span>
+                    <button type="submit" class="btn-glow">
+                        <span>+ Add Transaction</span>
                     </button>
                 </form>
             </section>
 
             <!-- Chart Section -->
-            <section class="glass-panel chart-panel">
+            <section class="glass-card chart-panel">
                 <div class="panel-header">
-                    <h3>Spending Breakdown</h3>
+                    <h3><span class="header-icon">📊</span> Spending Analytics</h3>
                 </div>
-                <div class="chart-container">
+                <div class="chart-wrapper">
                     <canvas id="category-chart"></canvas>
                 </div>
             </section>
         </div>
 
-        <!-- History Table -->
-        <section class="glass-panel table-panel">
+        <!-- History Table Section -->
+        <section class="glass-card table-panel">
             <div class="panel-header table-header">
-                <h3>Recent Expenses</h3>
-                <span class="badge" id="table-count">0 items</span>
+                <h3><span class="header-icon">📑</span> Recent Transactions</h3>
+                <span class="counter-badge" id="table-count">0 items</span>
             </div>
             <div class="table-responsive">
                 <table id="expenses-table">

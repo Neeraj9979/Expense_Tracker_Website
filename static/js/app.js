@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableCountEl = document.getElementById("table-count");
     const dateInput = document.getElementById("date");
 
-    // Set today's date in local time as default
+    // Default to current local date
     const today = new Date().toISOString().split("T")[0];
     dateInput.value = today;
 
@@ -22,12 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }).format(amount);
     };
 
-    // Fetch and render initial expense data
     fetchExpenses();
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
+
         const expense = {
             title: document.getElementById("title").value.trim(),
             amount: parseFloat(document.getElementById("amount").value),
@@ -48,10 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetchExpenses();
             } else {
                 const err = await res.json();
-                alert(err.error || "Failed to add expense.");
+                alert(err.error || "Failed to log transaction.");
             }
         } catch (error) {
-            console.error("Error adding expense:", error);
+            console.error("Error saving expense:", error);
         }
     });
 
@@ -73,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (expenses.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="empty-state">No expense records found. Add one above!</td>
+                    <td colspan="5" class="empty-msg">No transactions found. Log one above to get started!</td>
                 </tr>
             `;
         } else {
@@ -85,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 tr.innerHTML = `
                     <td>${exp.date}</td>
                     <td>${escapeHTML(exp.title)}</td>
-                    <td><span class="category-tag">${escapeHTML(exp.category)}</span></td>
+                    <td><span class="tag-pill">${escapeHTML(exp.category)}</span></td>
                     <td class="amount-text">${formatINR(exp.amount)}</td>
                     <td class="text-right">
                         <button class="btn-delete" onclick="deleteExpense(${exp.id})">Delete</button>
@@ -95,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Update dashboard metrics
+        // Update Dashboard Metrics
         totalSpendingEl.textContent = formatINR(total);
         totalEntriesEl.textContent = expenses.length;
         activeCategoriesEl.textContent = Object.keys(categoryMap).length;
@@ -105,14 +104,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.deleteExpense = async function(id) {
-        if (!confirm("Are you sure you want to delete this expense?")) return;
+        if (!confirm("Delete this expense record?")) return;
 
         try {
             const res = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
             if (res.ok) {
                 fetchExpenses();
             } else {
-                alert("Failed to delete expense.");
+                alert("Could not delete record.");
             }
         } catch (error) {
             console.error("Error deleting expense:", error);
@@ -140,26 +139,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 datasets: [{
                     data: data,
                     backgroundColor: [
-                        "#4318FF", "#6AD2FF", "#EFF4FB", 
-                        "#FFB547", "#05CD99", "#E056FD"
+                        "#00F2FE", "#7F56D9", "#FF007F", 
+                        "#00F5A0", "#FFB547", "#FF4D4D"
                     ],
-                    borderWidth: 2,
-                    borderColor: "#ffffff"
+                    borderWidth: 0,
+                    hoverOffset: 8
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { 
+                    legend: {
                         position: "bottom",
                         labels: {
+                            color: "#A0AEC0",
                             font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 },
                             usePointStyle: true,
-                            padding: 15
+                            padding: 16
                         }
                     },
                     tooltip: {
+                        backgroundColor: "rgba(10, 13, 24, 0.9)",
+                        titleColor: "#FFF",
+                        bodyColor: "#00F5A0",
+                        borderColor: "rgba(255, 255, 255, 0.12)",
+                        borderWidth: 1,
+                        padding: 12,
                         callbacks: {
                             label: function(context) {
                                 return ` ${context.label}: ${formatINR(context.raw)}`;
@@ -167,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
                 },
-                cutout: "70%"
+                cutout: "72%"
             }
         });
     }
