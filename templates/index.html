@@ -7,11 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Background Animated Gradient Orbs -->
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
@@ -30,6 +29,14 @@
                 <span class="live-status"><span class="status-dot"></span> Live Sync</span>
             </div>
         </header>
+
+        <!-- Budget Alert Warning Banner (Hidden by default) -->
+        <div id="budget-banner" class="budget-alert-banner hidden">
+            <div class="banner-content">
+                <span class="banner-icon" id="banner-icon">⚠️</span>
+                <span id="banner-text">Budget alert message here</span>
+            </div>
+        </div>
 
         <!-- Metrics Cards Grid -->
         <section class="metrics-grid">
@@ -52,6 +59,30 @@
                 <div class="card-info">
                     <span class="card-label">Active Categories</span>
                     <h2 id="active-categories">0</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Limit Controller Panel -->
+        <section class="glass-card budget-panel">
+            <div class="budget-header">
+                <div>
+                    <h3><span class="header-icon">🎯</span> Monthly Budget Limit</h3>
+                    <p class="subtitle">Set your maximum monthly spending threshold</p>
+                </div>
+                <div class="budget-input-wrapper">
+                    <span class="currency-symbol">₹</span>
+                    <input type="number" id="budget-limit-input" placeholder="Set Limit" min="100" step="100" value="20000">
+                    <button id="btn-save-budget" class="btn-sm-glow">Set</button>
+                </div>
+            </div>
+            <div class="budget-progress-section">
+                <div class="progress-info">
+                    <span id="budget-status-text">Spent ₹0.00 of ₹20,000.00</span>
+                    <span id="budget-percent-text" class="percent-badge">0%</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div id="budget-progress-fill" class="progress-bar-fill green"></div>
                 </div>
             </div>
         </section>
@@ -129,13 +160,12 @@
                         </tr>
                     </thead>
                     <tbody id="expenses-tbody">
-                        <!-- Dynamic Rows -->
                     </tbody>
                 </table>
             </div>
         </section>
     </div>
 
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}?v=1.2"></script>
 </body>
 </html>

@@ -7,7 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableCountEl = document.getElementById("table-count");
     const dateInput = document.getElementById("date");
 
-    // Default to current local date
+    // Budget Elements
+    const budgetInput = document.getElementById("budget-limit-input");
+    const btnSaveBudget = document.getElementById("btn-save-budget");
+    const budgetStatusText = document.getElementById("budget-status-text");
+    const budgetPercentText = document.getElementById("budget-percent-text");
+    const budgetProgressFill = document.getElementById("budget-progress-fill");
+    const budgetBanner = document.getElementById("budget-banner");
+    const bannerIcon = document.getElementById("banner-icon");
+    const bannerText = document.getElementById("banner-text");
+
+    // Load saved budget limit from LocalStorage or default to ₹20,000
+    let monthlyBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 20000;
+    budgetInput.value = monthlyBudget;
+
     const today = new Date().toISOString().split("T")[0];
     dateInput.value = today;
 
@@ -23,6 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     fetchExpenses();
+
+    // Event listener to set custom monthly budget
+    btnSaveBudget.addEventListener("click", () => {
+        const val = parseFloat(budgetInput.value);
+        if (val && val > 0) {
+            monthlyBudget = val;
+            localStorage.setItem("monthlyBudget", monthlyBudget);
+            fetchExpenses();
+        } else {
+            alert("Please enter a valid positive budget amount.");
+        }
+    });
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -94,13 +119,44 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Update Dashboard Metrics
+        // Update Metrics
         totalSpendingEl.textContent = formatINR(total);
         totalEntriesEl.textContent = expenses.length;
         activeCategoriesEl.textContent = Object.keys(categoryMap).length;
         tableCountEl.textContent = `${expenses.length} item${expenses.length === 1 ? '' : 's'}`;
 
+        // Update Budget Limit Controls & Alerts
+        updateBudgetUI(total);
+
+        // Update Doughnut Chart
         updateChart(categoryMap);
+    }
+
+    function updateBudgetUI(totalSpent) {
+        const percentage = Math.min((totalSpent / monthlyBudget) * 100, 100);
+        const percentFormatted = Math.round((totalSpent / monthlyBudget) * 100);
+
+        budgetStatusText.textContent = `Spent ${formatINR(totalSpent)} of ${formatINR(monthlyBudget)}`;
+        budgetPercentText.textContent = `${percentFormatted}%`;
+        budgetProgressFill.style.width = `${percentage}%`;
+
+        // Reset progress bar & banner classes
+        budgetProgressFill.className = "progress-bar-fill";
+        budgetBanner.className = "budget-alert-banner hidden";
+
+        if (percentFormatted >= 100) {
+            budgetProgressFill.classList.add("red");
+            budgetBanner.className = "budget-alert-banner danger";
+            bannerIcon.textContent = "🚨";
+            bannerText.textContent = `Budget Exceeded! You have spent ${formatINR(totalSpent - monthlyBudget)} over your monthly limit of ${formatINR(monthlyBudget)}.`;
+        } else if (percentFormatted >= 80) {
+            budgetProgressFill.classList.add("yellow");
+            budgetBanner.className = "budget-alert-banner warning";
+            bannerIcon.textContent = "⚠️";
+            bannerText.textContent = `Warning: You have reached ${percentFormatted}% of your monthly limit (${formatINR(monthlyBudget)}).`;
+        } else {
+            budgetProgressFill.classList.add("green");
+        }
     }
 
     window.deleteExpense = async function(id) {

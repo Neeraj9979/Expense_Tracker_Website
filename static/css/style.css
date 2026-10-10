@@ -9,6 +9,7 @@
     --accent-cyan: #00f2fe;
     --accent-pink: #ff007f;
     --accent-green: #00f5a0;
+    --warning-yellow: #ffb547;
     --danger-red: #ff4d4d;
     --danger-glow: rgba(255, 77, 77, 0.25);
     --radius-xl: 24px;
@@ -33,7 +34,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Background Ambient Glow Orbs */
 .bg-orb {
     position: fixed;
     border-radius: 50%;
@@ -43,29 +43,9 @@ body {
     opacity: 0.4;
 }
 
-.orb-1 {
-    width: 350px;
-    height: 350px;
-    background: var(--accent-purple);
-    top: -50px;
-    left: -50px;
-}
-
-.orb-2 {
-    width: 400px;
-    height: 400px;
-    background: var(--accent-cyan);
-    bottom: -100px;
-    right: -100px;
-}
-
-.orb-3 {
-    width: 300px;
-    height: 300px;
-    background: var(--accent-pink);
-    top: 40%;
-    left: 45%;
-}
+.orb-1 { width: 350px; height: 350px; background: var(--accent-purple); top: -50px; left: -50px; }
+.orb-2 { width: 400px; height: 400px; background: var(--accent-cyan); bottom: -100px; right: -100px; }
+.orb-3 { width: 300px; height: 300px; background: var(--accent-pink); top: 40%; left: 45%; }
 
 .app-container {
     max-width: 1120px;
@@ -75,8 +55,7 @@ body {
     gap: 25px;
 }
 
-/* Glassmorphism Card Base */
-.glass-card, .glass-header {
+.glass-card, .glass-header, .budget-alert-banner {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -85,7 +64,6 @@ body {
     box-shadow: var(--shadow-glass);
 }
 
-/* Header Navbar */
 .glass-header {
     padding: 20px 28px;
     display: flex;
@@ -154,6 +132,38 @@ body {
     box-shadow: 0 0 10px var(--accent-green);
 }
 
+/* Budget Alert Banner */
+.budget-alert-banner {
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s ease;
+}
+
+.budget-alert-banner.warning {
+    background: rgba(255, 181, 71, 0.15);
+    border-color: rgba(255, 181, 71, 0.4);
+    color: var(--warning-yellow);
+}
+
+.budget-alert-banner.danger {
+    background: rgba(255, 77, 77, 0.2);
+    border-color: rgba(255, 77, 77, 0.5);
+    color: var(--danger-red);
+    box-shadow: 0 0 20px var(--danger-glow);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
 /* Metrics Dashboard Grid */
 .metrics-grid {
     display: grid;
@@ -202,6 +212,112 @@ body {
     margin-top: 4px;
 }
 
+/* Budget Panel */
+.budget-panel {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.budget-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+}
+
+.currency-symbol {
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.budget-input-wrapper input {
+    width: 120px;
+    padding: 6px 8px;
+    background: transparent;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.budget-input-wrapper input:focus {
+    box-shadow: none;
+    background: transparent;
+}
+
+.btn-sm-glow {
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-sm-glow:hover {
+    background: var(--accent-cyan);
+    color: #000;
+}
+
+.budget-progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.percent-badge {
+    color: var(--accent-cyan);
+}
+
+.progress-bar-track {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.progress-bar-fill.green {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+}
+
+.progress-bar-fill.yellow {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--warning-yellow));
+}
+
+.progress-bar-fill.red {
+    background: linear-gradient(90deg, var(--warning-yellow), var(--danger-red));
+}
+
 /* Split Workspace */
 .content-split {
     display: grid;
@@ -225,7 +341,6 @@ body {
     gap: 10px;
 }
 
-/* Forms and Inputs */
 form {
     display: flex;
     flex-direction: column;
@@ -295,7 +410,6 @@ input:focus, select:focus {
     box-shadow: 0 15px 35px rgba(255, 0, 127, 0.45);
 }
 
-/* Chart Canvas */
 .chart-wrapper {
     position: relative;
     height: 290px;
@@ -304,7 +418,6 @@ input:focus, select:focus {
     justify-content: center;
 }
 
-/* Table Section */
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -392,19 +505,6 @@ tr:hover td {
     background: var(--danger-red);
     color: #fff;
     box-shadow: 0 0 15px var(--danger-glow);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-dark);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 10px;
 }
 
 @media (max-width: 850px) {
